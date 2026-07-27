@@ -1,28 +1,34 @@
 import { NextResponse } from 'next/server';
-import { projects, activityFeed as baseActivity } from '@/data/projects';
-import fs from 'fs';
-import path from 'path';
+import { projects } from '@/data/projects';
 
-interface SubmittedProject {
-  id: string;
-  name: string;
-  handle: string | null;
-  description: string;
-  category: string;
-  twitter?: string;
-  website?: string;
-  status: string;
-  tags: string[];
-  submitted: boolean;
-  submittedAt?: string;
-}
+const GITHUB_PAT = process.env.GITHUB_PAT || 'ghp_24zs9N1DDo66gPEhhW4TKWQqvSqo1G';
+const REPO_OWNER = 'Faisalsathu786';
+const REPO_NAME = 'Arc-Ecosystem-Radar';
+const FILE_PATH = 'data/submitted-projects.json';
+const BRANCH = 'main';
 
-function getSubmittedProjects(): SubmittedProject[] {
+async function getSubmittedProjects(): Promise<any[]> {
   try {
-    const filePath = path.join(process.cwd(), 'data', 'submitted-projects.json');
-    const content = fs.readFileSync(filePath, 'utf-8');
+    const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}?ref=${BRANCH}`;
+    const res = await fetch(url, {
+      headers: {
+        Authorization: `token ${GITHUB_PAT}`,
+        Accept: 'application/vnd.github.v3+json',
+      },
+      signal: AbortSignal.timeout(10000),
+    });
+
+    if (!res.ok) {
+      if (res.status === 404) return [];
+      console.error('GitHub fetch failed:', res.status);
+      return [];
+    }
+
+    const data = await res.json();
+    const content = Buffer.from(data.content, 'base64').toString('utf-8');
     return JSON.parse(content);
-  } catch {
+  } catch (e) {
+    console.error('Failed to fetch submitted projects:', e);
     return [];
   }
 }
@@ -33,27 +39,27 @@ export async function GET(request: Request) {
   const status = searchParams.get('status');
   const search = searchParams.get('search');
 
-  const submitted = getSubmittedProjects();
+  const submitted = await getSubmittedProjects();
 
   // Merge base projects + submitted projects, deduplicate by id
   const baseIds = new Set(projects.map((p) => p.id));
-  const uniqueSubmitted = submitted.filter((p) => !baseIds.has(p.id));
+  const uniqueSubmitted = submitted.filter((p: any) => !baseIds.has(p.id));
 
   const merged = [
     ...projects,
-    ...uniqueSubmitted.map((p) => ({
+    ...uniqueSubmitted.map((p: any) => ({
       id: p.id,
       name: p.name,
       handle: p.handle,
       description: p.description,
-      category: p.category as any,
+      category: p.category,
       twitter: p.twitter,
       website: p.website,
-      status: p.status as any,
+      status: p.status,
       tags: p.tags,
       spotlight: false,
       logo: undefined,
-      submitted: true as const,
+      submitted: true,
       submittedAt: p.submittedAt,
     })),
   ];
@@ -61,20 +67,20 @@ export async function GET(request: Request) {
   let filtered = [...merged];
 
   if (category && category !== 'all') {
-    filtered = filtered.filter((p) => p.category === category);
+    filtered = filtered.filter((p: any) => p.category === category);
   }
 
   if (status && status !== 'all') {
-    filtered = filtered.filter((p) => p.status === status);
+    filtered = filtered.filter((p: any) => p.status === status);
   }
 
   if (search) {
     const q = search.toLowerCase();
     filtered = filtered.filter(
-      (p) =>
+      (p: any) =>
         p.name.toLowerCase().includes(q) ||
         p.description.toLowerCase().includes(q) ||
-        p.tags.some((t) => t.includes(q))
+        p.tags.some((t: string) => t.includes(q))
     );
   }
 
