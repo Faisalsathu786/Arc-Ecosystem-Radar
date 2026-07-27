@@ -1,0 +1,10 @@
+{"ts":"2026-07-27T05:07:51.228Z","msg":"Starting Arc ecosystem scan"}
+{"ts":"2026-07-27T05:07:51.503Z","msg":"Failed https://r.jina.ai/https://x.com/arc: 401"}
+{"ts":"2026-07-27T05:07:51.719Z","msg":"Failed https://r.jina.ai/https://x.com/search?q=%40arc+ecosystem+project&src=typed_query&f=top: 401"}
+{"ts":"2026-07-27T05:07:51.719Z","msg":"No new projects found"}
+{"ts":"2026-07-27T05:07:51.720Z","msg":"Scan complete. Total submitted projects: 3"}
+{"ts":"2026-07-27T05:08:26.630Z","msg":"Starting Arc ecosystem scan"}
+{"ts":"2026-07-27T05:08:27.272Z","msg":"Arc Community returned 404"}
+{"ts":"2026-07-27T05:08:27.517Z","msg":"Arc X Profile (jina) returned 403"}
+{"ts":"2026-07-27T05:08:27.518Z","msg":"No new projects found. Total known handles: 25"}
+{"ts":"2026-07-27T05:08:27.518Z","msg":"Scan complete. Total submitted projects: 3"}
