@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { projects } from '@/data/projects';
 
-const GITHUB_PAT = process.env.GITHUB_PAT || 'ghp_24zs9N1DDo66gPEhhW4TKWQqvSqo1G';
+const GITHUB_PAT = process.env.GITHUB_PAT;
 const REPO_OWNER = 'Faisalsathu786';
 const REPO_NAME = 'Arc-Ecosystem-Radar';
 const FILE_PATH = 'data/submitted-projects.json';
