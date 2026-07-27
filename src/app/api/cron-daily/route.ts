@@ -92,7 +92,7 @@ export async function GET() {
               handle.length > 3 &&
               !KNOWN_HANDLES.includes(handle) &&
               !existingHandles.has(handle) &&
-              !['http', 'https', 'twitter', 'xcom'].includes(handle)
+              !['http','https','twitter','xcom','context','graph','type','keyframes','media','script','style','link','meta','title','body','html','head','main','section','header','footer','nav','div','span','class','data','name','content','charset','viewport','width','device','initial','scale','element','component','object','array','string','number','function','window','document','console','error','event','click','mouse','key','input','output','value','index','item','list','text','image','video','audio','font','color','background','border','margin','padding','display','position','flex','grid','block','inline','none','auto','hidden','visible','scroll','overflow','height','width','size','large','small','medium','center','left','right','top','bottom','absolute','relative','fixed','static','important','primary','secondary','success','danger','warning','info','light','dark','white','black','red','blue','green','yellow','orange','purple','pink','gray','grey'].includes(handle)
             ) {
               const projectName =
                 handle.charAt(0).toUpperCase() + handle.slice(1);
