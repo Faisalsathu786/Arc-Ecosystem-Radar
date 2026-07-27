@@ -165,8 +165,12 @@ export default function ProjectsPage() {
             )}
           >
             <div className="flex items-start justify-between mb-3">
-              <div className="w-10 h-10 rounded-lg bg-[#050508] border border-[#1a1a2e] flex items-center justify-center text-[#818cf8] font-bold text-sm">
-                {project.name.charAt(0)}
+              <div className="w-10 h-10 rounded-lg bg-[#050508] border border-[#1a1a2e] flex items-center justify-center overflow-hidden shrink-0">
+                {project.logo ? (
+                  <img src={project.logo} alt={project.name} className="w-full h-full object-cover" />
+                ) : (
+                  <span className="text-[#818cf8] font-bold text-sm">{project.name.charAt(0)}</span>
+                )}
               </div>
               <div className="flex gap-1.5">
                 {project.submitted && (

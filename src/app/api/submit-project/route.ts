@@ -75,6 +75,7 @@ export async function POST(request: Request) {
       website: body.website || undefined,
       status: body.status || 'building',
       tags: body.tags || [],
+      logo: body.handle ? `https://unavatar.io/x/${body.handle}` : undefined,
       submitted: true,
       submittedAt: new Date().toISOString().split('T')[0],
     };

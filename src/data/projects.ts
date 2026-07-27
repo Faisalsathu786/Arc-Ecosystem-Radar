@@ -25,6 +25,7 @@ export const projects: ArcProject[] = [
     twitter: 'https://x.com/synthra_finance',
     status: 'testnet',
     spotlight: true,
+    logo: 'https://unavatar.io/x/synthra_finance',
     tags: ['dex', 'amm', 'perps', 'concentrated-liquidity'],
   },
   {
@@ -37,6 +38,7 @@ export const projects: ArcProject[] = [
     website: 'https://pulsarmoney.app',
     status: 'testnet',
     spotlight: true,
+    logo: 'https://unavatar.io/x/PulsarMoneyApp',
     tags: ['stablecoin', 'multi-currency', 'payments'],
   },
   {
@@ -48,6 +50,7 @@ export const projects: ArcProject[] = [
     twitter: 'https://x.com/AIsaOneHQ',
     status: 'testnet',
     spotlight: true,
+    logo: 'https://unavatar.io/x/AIsaOneHQ',
     tags: ['ai', 'agents', 'api', 'stablecoin-payments'],
   },
   {
@@ -59,6 +62,7 @@ export const projects: ArcProject[] = [
     twitter: 'https://x.com/Xylonet_',
     status: 'testnet',
     spotlight: true,
+    logo: 'https://unavatar.io/x/Xylonet_',
     tags: ['payments', 'bridging', 'yield', 'identity'],
   },
   {
@@ -69,6 +73,7 @@ export const projects: ArcProject[] = [
     category: 'dex',
     twitter: 'https://x.com/TowerExchange',
     status: 'testnet',
+    logo: 'https://unavatar.io/x/TowerExchange',
     tags: ['dex-aggregator', 'bridging', 'liquidity'],
   },
   {
@@ -79,6 +84,7 @@ export const projects: ArcProject[] = [
     category: 'payments',
     twitter: 'https://x.com/tlay_io',
     status: 'testnet',
+    logo: 'https://unavatar.io/x/tlay_io',
     tags: ['iot', 'machine-payments', 'usdc'],
   },
   {
@@ -89,6 +95,7 @@ export const projects: ArcProject[] = [
     category: 'infrastructure',
     twitter: 'https://x.com/BlockradarHQ',
     status: 'testnet',
+    logo: 'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://blockradar.co&size=128',
     tags: ['wallet-infra', 'aml', 'gasless'],
   },
   {
@@ -99,6 +106,7 @@ export const projects: ArcProject[] = [
     category: 'payments',
     twitter: 'https://x.com/myazahq',
     status: 'testnet',
+    logo: 'https://unavatar.io/x/myazahq',
     tags: ['africa', 'payments', 'remittance'],
   },
   {
@@ -109,6 +117,7 @@ export const projects: ArcProject[] = [
     category: 'payments',
     twitter: 'https://x.com/payritHQ',
     status: 'testnet',
+    logo: 'https://unavatar.io/x/payritHQ',
     tags: ['cross-border', 'remittance', 'usdc'],
   },
   {
@@ -119,6 +128,7 @@ export const projects: ArcProject[] = [
     category: 'payments',
     twitter: 'https://x.com/ViFi_Labs',
     status: 'testnet',
+    logo: 'https://unavatar.io/x/ViFi_Labs',
     tags: ['fx', 'stablecoin', 'emerging-markets'],
   },
   {
@@ -129,6 +139,7 @@ export const projects: ArcProject[] = [
     category: 'payments',
     twitter: 'https://x.com/usesfxmoneyapp',
     status: 'testnet',
+    logo: 'https://unavatar.io/x/usesfxmoneyapp',
     tags: ['neobank', 'africa', 'usdc', 'savings'],
   },
   {
@@ -139,6 +150,7 @@ export const projects: ArcProject[] = [
     category: 'defi',
     twitter: 'https://x.com/Mimir_Markets',
     status: 'testnet',
+    logo: 'https://unavatar.io/x/Mimir_Markets',
     tags: ['prediction-markets', 'derivatives'],
   },
   {
@@ -149,6 +161,7 @@ export const projects: ArcProject[] = [
     category: 'infrastructure',
     twitter: 'https://x.com/hinkal_protocol',
     status: 'testnet',
+    logo: 'https://unavatar.io/x/hinkal_protocol',
     tags: ['privacy', 'confidential-transactions'],
   },
   {
@@ -159,6 +172,7 @@ export const projects: ArcProject[] = [
     category: 'analytics',
     twitter: 'https://x.com/ArcDEXScan',
     status: 'testnet',
+    logo: 'https://unavatar.io/x/ArcDEXScan',
     tags: ['dex-scanner', 'analytics', 'tracker'],
   },
   {
@@ -169,6 +183,7 @@ export const projects: ArcProject[] = [
     category: 'defi',
     twitter: 'https://x.com/MeridianFi',
     status: 'testnet',
+    logo: 'https://unavatar.io/x/MeridianFi',
     tags: ['lending', 'borrowing', 'stablecoin'],
   },
   {
@@ -179,6 +194,7 @@ export const projects: ArcProject[] = [
     category: 'dex',
     twitter: 'https://x.com/KONswap',
     status: 'testnet',
+    logo: 'https://unavatar.io/x/KONswap',
     tags: ['swap-aggregator', 'routing'],
   },
   {
@@ -189,6 +205,7 @@ export const projects: ArcProject[] = [
     category: 'infrastructure',
     website: 'https://pairpoint.io',
     status: 'testnet',
+    logo: 'https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://pairpoint.io&size=128',
     tags: ['iot', 'connectivity', 'sim'],
   },
   {
@@ -200,6 +217,7 @@ export const projects: ArcProject[] = [
     website: 'https://wirexapp.com',
     twitter: 'https://x.com/wirexapp',
     status: 'testnet',
+    logo: 'https://unavatar.io/x/wirexapp',
     tags: ['banking', 'cards', 'payments', 'neobank'],
   },
   {
@@ -211,6 +229,7 @@ export const projects: ArcProject[] = [
     twitter: 'https://x.com/0xsequence',
     website: 'https://sequence.build',
     status: 'testnet',
+    logo: 'https://unavatar.io/x/0xsequence',
     tags: ['wallet', 'trading', 'platform'],
   },
   {
@@ -221,6 +240,7 @@ export const projects: ArcProject[] = [
     category: 'defi',
     website: 'https://unitflow.finance',
     status: 'testnet',
+    logo: 'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://unitflow.finance&size=128',
     tags: ['lending', 'yield', 'defi'],
   },
   {
@@ -231,6 +251,7 @@ export const projects: ArcProject[] = [
     category: 'community',
     twitter: 'https://x.com/arckitties',
     status: 'building',
+    logo: 'https://unavatar.io/x/arckitties',
     tags: ['nft', 'collection', 'meme'],
   },
   {
@@ -241,6 +262,7 @@ export const projects: ArcProject[] = [
     category: 'community',
     twitter: 'https://x.com/arcadiansonarc',
     status: 'building',
+    logo: 'https://unavatar.io/x/arcadiansonarc',
     tags: ['gaming', 'community', 'social'],
   },
   {
@@ -251,6 +273,7 @@ export const projects: ArcProject[] = [
     category: 'community',
     twitter: 'https://x.com/8bitarc',
     status: 'building',
+    logo: 'https://unavatar.io/x/8bitarc',
     tags: ['gaming', 'retro', 'collectibles'],
   },
   {
@@ -261,6 +284,7 @@ export const projects: ArcProject[] = [
     category: 'community',
     twitter: 'https://x.com/onchainsharc',
     status: 'building',
+    logo: 'https://unavatar.io/x/onchainsharc',
     tags: ['community', 'social'],
   },
   {
@@ -270,6 +294,7 @@ export const projects: ArcProject[] = [
     description: '24/7 institutional stablecoin foreign exchange trading platform on Arc, built by Circle.',
     category: 'payments',
     status: 'testnet',
+    logo: 'https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://circle.com&size=128',
     tags: ['fx', 'institutional', 'stablecoin'],
   },
 ];

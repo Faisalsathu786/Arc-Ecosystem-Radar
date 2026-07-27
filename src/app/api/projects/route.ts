@@ -45,7 +45,7 @@ export async function GET(request: Request) {
       status: p.status,
       tags: p.tags,
       spotlight: false,
-      logo: undefined,
+      logo: p.logo || undefined,
       submitted: true,
       submittedAt: p.submittedAt,
     })),
