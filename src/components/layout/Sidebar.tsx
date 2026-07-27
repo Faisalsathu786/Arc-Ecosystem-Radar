@@ -8,6 +8,7 @@ const NAV_ITEMS = [
   { href: '/', label: 'Dashboard', icon: '#' },
   { href: '/projects', label: 'Projects', icon: '[]' },
   { href: '/activity', label: 'Activity', icon: '~' },
+  { href: '/submit', label: 'Submit Project', icon: '+' },
 ];
 
 interface SidebarProps {

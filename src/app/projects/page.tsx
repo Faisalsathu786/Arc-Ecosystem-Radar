@@ -1,11 +1,25 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { projects, categoryLabels } from '@/data/projects';
+import { projects as baseProjects, categoryLabels } from '@/data/projects';
 import { ProjectCategory } from '@/types';
 import clsx from 'clsx';
 
-const CATEGORIES: { id: ProjectCategory | 'all'; label: string }[] = [
+interface SubmittedProject {
+  id: string;
+  name: string;
+  handle: string | null;
+  description: string;
+  category: string;
+  twitter?: string;
+  website?: string;
+  status: string;
+  tags: string[];
+  submitted: boolean;
+  submittedAt?: string;
+}
+
+const CATEGORIES: { id: string; label: string }[] = [
   { id: 'all', label: 'All' },
   { id: 'payments', label: 'Payments' },
   { id: 'defi', label: 'DeFi' },
@@ -22,40 +36,69 @@ const CATEGORIES: { id: ProjectCategory | 'all'; label: string }[] = [
 ];
 
 export default function ProjectsPage() {
-  const [selectedCategory, setSelectedCategory] = useState<ProjectCategory | 'all'>('all');
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [submitted, setSubmitted] = useState<SubmittedProject[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Load submitted projects on mount
+  useState(() => {
+    fetch('/api/projects')
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.submittedCount > 0) {
+          setSubmitted(data.projects.filter((p: any) => p.submitted));
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  });
+
+  const baseCount = baseProjects.length;
+  const submittedCount = submitted.length;
+
+  const totalProjects = baseProjects.map((p) => ({
+    ...p,
+    submitted: false,
+    submittedAt: undefined,
+  }));
+
+  const merged = [...totalProjects, ...submitted];
 
   const filtered = useMemo(() => {
-    let result = projects;
+    let result = merged;
 
     if (selectedCategory !== 'all') {
-      result = result.filter((p) => p.category === selectedCategory);
+      result = result.filter((p: any) => p.category === selectedCategory);
     }
 
     if (statusFilter !== 'all') {
-      result = result.filter((p) => p.status === statusFilter);
+      result = result.filter((p: any) => p.status === statusFilter);
     }
 
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
       result = result.filter(
-        (p) =>
+        (p: any) =>
           p.name.toLowerCase().includes(q) ||
           p.description.toLowerCase().includes(q) ||
-          p.tags.some((t) => t.toLowerCase().includes(q))
+          p.tags.some((t: string) => t.toLowerCase().includes(q))
       );
     }
 
     return result;
-  }, [selectedCategory, searchQuery, statusFilter]);
+  }, [selectedCategory, searchQuery, statusFilter, submitted]);
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-xl font-bold text-white">Projects</h1>
         <p className="text-sm text-[#8a8a8a] mt-1">
-          {projects.length} projects building on Arc ecosystem
+          {merged.length} projects building on Arc ecosystem
+          {submittedCount > 0 && (
+            <span className="text-[#818cf8]"> ({submittedCount} community submitted)</span>
+          )}
         </p>
       </div>
 
@@ -78,12 +121,20 @@ export default function ProjectsPage() {
           <option value="building">In Development</option>
           <option value="mainnet">Mainnet</option>
         </select>
+        <a
+          href="/submit"
+          className="inline-flex items-center px-4 py-2 bg-[#818cf8] text-black text-sm font-medium rounded-lg hover:bg-[#a78bfa] transition-colors shrink-0"
+        >
+          + Submit Project
+        </a>
       </div>
 
       {/* Category pills */}
       <div className="flex flex-wrap gap-2">
         {CATEGORIES.map((cat) => {
-          const count = cat.id === 'all' ? projects.length : projects.filter((p) => p.category === cat.id).length;
+          const count = cat.id === 'all'
+            ? merged.length
+            : merged.filter((p: any) => p.category === cat.id).length;
           return (
             <button
               key={cat.id}
@@ -103,27 +154,39 @@ export default function ProjectsPage() {
 
       {/* Project grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filtered.map((project) => (
+        {filtered.map((project: any) => (
           <div
             key={project.id}
-            className="rounded-xl border border-[#1a1a2e] bg-[#0a0a0f] p-4 hover:border-[#818cf8]/30 transition-colors group"
+            className={clsx(
+              'rounded-xl border p-4 transition-colors group',
+              project.submitted
+                ? 'border-purple-500/20 bg-[#0a0a0f]'
+                : 'border-[#1a1a2e] bg-[#0a0a0f] hover:border-[#818cf8]/30'
+            )}
           >
             <div className="flex items-start justify-between mb-3">
               <div className="w-10 h-10 rounded-lg bg-[#050508] border border-[#1a1a2e] flex items-center justify-center text-[#818cf8] font-bold text-sm">
                 {project.name.charAt(0)}
               </div>
-              <span
-                className={clsx(
-                  'text-[10px] px-2 py-0.5 rounded-full font-medium',
-                  project.status === 'testnet'
-                    ? 'bg-green-500/10 text-green-400 border border-green-500/20'
-                    : project.status === 'mainnet'
-                    ? 'bg-[#818cf8]/10 text-[#818cf8] border border-[#818cf8]/20'
-                    : 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20'
+              <div className="flex gap-1.5">
+                {project.submitted && (
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20">
+                    Community
+                  </span>
                 )}
-              >
-                {project.status === 'testnet' ? 'Testnet' : project.status === 'mainnet' ? 'Mainnet' : 'Building'}
-              </span>
+                <span
+                  className={clsx(
+                    'text-[10px] px-2 py-0.5 rounded-full font-medium',
+                    project.status === 'testnet'
+                      ? 'bg-green-500/10 text-green-400 border border-green-500/20'
+                      : project.status === 'mainnet'
+                      ? 'bg-[#818cf8]/10 text-[#818cf8] border border-[#818cf8]/20'
+                      : 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20'
+                  )}
+                >
+                  {project.status === 'testnet' ? 'Testnet' : project.status === 'mainnet' ? 'Mainnet' : 'Building'}
+                </span>
+              </div>
             </div>
 
             <h3 className="text-sm font-semibold text-white group-hover:text-[#818cf8] transition-colors">
@@ -132,7 +195,7 @@ export default function ProjectsPage() {
             <p className="text-xs text-[#8a8a8a] mt-1.5 line-clamp-2">{project.description}</p>
 
             <div className="flex flex-wrap gap-1.5 mt-3">
-              {project.tags.slice(0, 3).map((tag) => (
+              {project.tags.slice(0, 3).map((tag: string) => (
                 <span key={tag} className="text-[10px] px-2 py-0.5 rounded bg-[#050508] text-[#6b6b80] border border-[#1a1a2e]">
                   {tag}
                 </span>

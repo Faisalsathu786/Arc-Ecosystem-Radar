@@ -1,0 +1,38 @@
+[
+  {
+    "id": "submitted-cctp420",
+    "name": "CCTP 420",
+    "handle": "cctp420",
+    "description": "Cross-chain transfer protocol integration bringing CCTP functionality to Arc ecosystem.",
+    "category": "crosschain",
+    "twitter": "https://x.com/cctp420",
+    "status": "building",
+    "tags": ["cctp", "crosschain", "bridging"],
+    "submitted": true,
+    "submittedAt": "2026-07-27"
+  },
+  {
+    "id": "submitted-sharcbay",
+    "name": "Sharc Bay",
+    "handle": "sharcbay",
+    "description": "DeFi yield optimization and liquidity management protocol on Arc.",
+    "category": "defi",
+    "twitter": "https://x.com/sharcbay",
+    "status": "building",
+    "tags": ["yield", "liquidity", "defi"],
+    "submitted": true,
+    "submittedAt": "2026-07-27"
+  },
+  {
+    "id": "submitted-unemployeeonarc",
+    "name": "Unemployed on Arc",
+    "handle": "unemployeeonarc",
+    "description": "Community project for developers and builders building on Arc ecosystem.",
+    "category": "community",
+    "twitter": "https://x.com/unemployeeonarc",
+    "status": "building",
+    "tags": ["community", "developers", "builders"],
+    "submitted": true,
+    "submittedAt": "2026-07-27"
+  }
+]
