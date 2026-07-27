@@ -9,6 +9,7 @@ import { readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { execSync } from 'child_process';
 
+const JSONBLOB_URL = 'https://jsonblob.com/api/jsonBlob/019fa219-474f-7990-906c-c2d5199a89fc';
 const WORKSPACE = '/home/node/.openclaw/workspace/arc-ecosystem';
 const DATA_FILE = join(WORKSPACE, 'data', 'submitted-projects.json');
 

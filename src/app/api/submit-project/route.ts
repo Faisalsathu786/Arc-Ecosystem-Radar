@@ -1,11 +1,9 @@
 import { NextResponse } from 'next/server';
 import { projects } from '@/data/projects';
 
-const GITHUB_PAT = process.env.GITHUB_PAT;
-const REPO_OWNER = 'Faisalsathu786';
-const REPO_NAME = 'Arc-Ecosystem-Radar';
-const FILE_PATH = 'data/submitted-projects.json';
-const BRANCH = 'main';
+// Free JSON storage - no auth needed, no expiry if renewed daily
+const JSONBLOB_ID = '019fa219-474f-7990-906c-c2d5199a89fc';
+const JSONBLOB_URL = `https://jsonblob.com/api/jsonBlob/${JSONBLOB_ID}`;
 
 interface SubmissionBody {
   name: string;
@@ -19,33 +17,23 @@ interface SubmissionBody {
 }
 
 async function getExistingSubmitted(): Promise<any[]> {
-  const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}?ref=${BRANCH}`;
-  const res = await fetch(url, {
-    headers: {
-      Authorization: `token ${GITHUB_PAT}`,
-      Accept: 'application/vnd.github.v3+json',
-    },
-  });
-
-  if (res.status === 404) return [];
-  if (!res.ok) throw new Error(`GitHub fetch failed: ${res.status}`);
-
-  const data = await res.json();
-  const content = Buffer.from(data.content, 'base64').toString('utf-8');
-  return JSON.parse(content);
+  try {
+    const res = await fetch(JSONBLOB_URL, {
+      headers: { 'Accept': 'application/json' },
+      signal: AbortSignal.timeout(10000),
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.projects || [];
+  } catch (e) {
+    console.error('Failed to fetch blob:', e);
+    return [];
+  }
 }
 
 export async function POST(request: Request) {
   try {
     const body: SubmissionBody = await request.json();
-
-    // Check PAT is configured
-    if (!GITHUB_PAT) {
-      return NextResponse.json(
-        { error: 'GitHub token not configured. Ask the dashboard owner to set GITHUB_PAT in Vercel environment variables.' },
-        { status: 500 }
-      );
-    }
 
     // Validate
     if (!body.name || !body.description || !body.category) {
@@ -55,10 +43,10 @@ export async function POST(request: Request) {
       );
     }
 
-    // Get existing submitted projects from GitHub
+    // Get existing submitted projects
     const existing = await getExistingSubmitted();
 
-    // Deduplicate by name (case-insensitive)
+    // Deduplicate by name
     const existingNames = new Set(existing.map((p: any) => p.name.toLowerCase()));
     if (existingNames.has(body.name.toLowerCase())) {
       return NextResponse.json(
@@ -92,52 +80,23 @@ export async function POST(request: Request) {
     };
 
     const updated = [...existing, newProject];
-    const encodedContent = Buffer.from(JSON.stringify(updated, null, 2)).toString('base64');
 
-    // Commit to GitHub
-    const commitUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`;
-
-    // First get the SHA if file exists
-    let sha: string | null = null;
-    try {
-      const existingFile = await fetch(
-        `${commitUrl}?ref=${BRANCH}`,
-        {
-          headers: {
-            Authorization: `token ${GITHUB_PAT}`,
-            Accept: 'application/vnd.github.v3+json',
-          },
-        }
-      );
-      if (existingFile.ok) {
-        const fileData = await existingFile.json();
-        sha = fileData.sha;
-      }
-    } catch {}
-
-    const commitBody: any = {
-      message: `Submit project: ${body.name} [skip ci]`,
-      content: encodedContent,
-      branch: BRANCH,
-    };
-
-    if (sha) {
-      commitBody.sha = sha;
-    }
-
-    const commitRes = await fetch(commitUrl, {
+    // Save to jsonblob - no auth needed!
+    const saveRes = await fetch(JSONBLOB_URL, {
       method: 'PUT',
       headers: {
-        Authorization: `token ${GITHUB_PAT}`,
-        Accept: 'application/vnd.github.v3+json',
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
-      body: JSON.stringify(commitBody),
+      body: JSON.stringify({
+        id: 'arc-ecosystem-submissions',
+        version: Date.now(),
+        projects: updated,
+      }),
     });
 
-    if (!commitRes.ok) {
-      const errText = await commitRes.text();
-      throw new Error(`GitHub commit failed (${commitRes.status}): ${errText}`);
+    if (!saveRes.ok) {
+      throw new Error(`Failed to save: ${saveRes.status}`);
     }
 
     return NextResponse.json({
@@ -148,7 +107,7 @@ export async function POST(request: Request) {
         category: newProject.category,
         status: newProject.status,
       },
-      message: 'Project submitted. It is now live in the directory!',
+      message: 'Project submitted successfully! It is now live in the directory.',
     });
   } catch (error) {
     console.error('Submit error:', error);

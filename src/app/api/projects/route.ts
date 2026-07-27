@@ -1,32 +1,19 @@
 import { NextResponse } from 'next/server';
 import { projects } from '@/data/projects';
 
-const GITHUB_PAT = process.env.GITHUB_PAT;
-const REPO_OWNER = 'Faisalsathu786';
-const REPO_NAME = 'Arc-Ecosystem-Radar';
-const FILE_PATH = 'data/submitted-projects.json';
-const BRANCH = 'main';
+// Free JSON storage - no auth needed
+const JSONBLOB_ID = '019fa219-474f-7990-906c-c2d5199a89fc';
+const JSONBLOB_URL = `https://jsonblob.com/api/jsonBlob/${JSONBLOB_ID}`;
 
 async function getSubmittedProjects(): Promise<any[]> {
   try {
-    const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}?ref=${BRANCH}`;
-    const res = await fetch(url, {
-      headers: {
-        Authorization: `token ${GITHUB_PAT}`,
-        Accept: 'application/vnd.github.v3+json',
-      },
+    const res = await fetch(JSONBLOB_URL, {
+      headers: { 'Accept': 'application/json' },
       signal: AbortSignal.timeout(10000),
     });
-
-    if (!res.ok) {
-      if (res.status === 404) return [];
-      console.error('GitHub fetch failed:', res.status);
-      return [];
-    }
-
+    if (!res.ok) return [];
     const data = await res.json();
-    const content = Buffer.from(data.content, 'base64').toString('utf-8');
-    return JSON.parse(content);
+    return data.projects || [];
   } catch (e) {
     console.error('Failed to fetch submitted projects:', e);
     return [];
